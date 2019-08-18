@@ -1,0 +1,32 @@
+diff --git a/ssl/statem/statem_srvr.c b/ssl/statem/statem_srvr.c
+index c7cd9eb662..1be68f17f3 100644
+--- a/ssl/statem/statem_srvr.c
++++ b/ssl/statem/statem_srvr.c
+@@ -2186,10 +2186,16 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt, int *al)
+     padding_len = decrypt_len - SSL_MAX_MASTER_KEY_LENGTH;
+     decrypt_good = constant_time_eq_int_8(rsa_decrypt[0], 0) &
+         constant_time_eq_int_8(rsa_decrypt[1], 2);
+-    for (j = 2; j < padding_len - 1; j++) {
++    if(!decrypt_good) {
++        *al = SSL_AD_DECRYPT_ERROR;
++        SSLerr(SSL_F_TLS_PROCESS_CKE_RSA, SSL_R_DECRYPTION_FAILED);
++        goto err;
++    }
++
++    /*for (j = 2; j < padding_len - 1; j++) {
+         decrypt_good &= ~constant_time_is_zero_8(rsa_decrypt[j]);
+     }
+-    decrypt_good &= constant_time_is_zero_8(rsa_decrypt[padding_len - 1]);
++    decrypt_good &= constant_time_is_zero_8(rsa_decrypt[padding_len - 1]);*/
+ 
+     /*
+      * If the version in the decrypted pre-master secret is correct then
+@@ -2229,7 +2235,7 @@ static int tls_process_cke_rsa(SSL *s, PACKET *pkt, int *al)
+      * Both decryption and version must be good for decrypt_good to
+      * remain non-zero (0xff).
+      */
+-    decrypt_good &= version_good;
++    //decrypt_good &= version_good;
+ 
+     /*
+      * Now copy rand_premaster_secret over from p using
