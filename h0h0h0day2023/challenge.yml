@@ -1,0 +1,16 @@
+name: Simple database viewer
+author: lixtelnis
+category: web
+description: Read the flag file at /flag.
+value: 100
+type: standard
+
+flags:
+    - flag{-_-more_than_a_web_server_less_than_a_database_client-_-}
+
+tags:
+    - web
+    - jdbc
+    - information disclosure
+
+version: "0.1"
