@@ -1,0 +1,26 @@
+<h1>Little Language Mistletoe</h1>
+<p>Hi, I am a Little Language Mistletoe. I can answer questions about the source code behind this very application! ✨</p>
+<p>
+<form method=GET>
+<input name=method type=hidden value=call_llm>
+<% if question.empty? %>
+  <textarea cols=50 name=argument>Explain the source code in Italian</textarea>
+<% else %>
+  <textarea cols=50 name=argument><%= question %></textarea>
+<% end %>
+<input type="submit">
+</form>
+</p>
+<pre style="white-space: pre-wrap">
+<% if answer.empty? %>
+Il codice sorgente mostra una parte di un'applicazione Ruby che utilizza il framework Faraday per effettuare richieste a un'API chiamata "LittleLanguageMistletoe". 
+
+La classe "MyApi" è una classe di utilità che viene utilizzata per inviare richieste POST all'API su un determinato URL. Viene creata un'istanza di questa classe all'interno del metodo "handle" della classe "Show". 
+
+Il metodo "handle" prende una richiesta e una risposta come argomenti. Estrae il valore dei parametri "method" e "argument" dalla richiesta. Se entrambi i parametri non sono nulli, viene creata un'istanza di "MyApi" e si tenta di invocare il metodo specificato da "method" con l'argomento specificato da "argument". L'eventuale risposta viene memorizzata nella variabile "ans".
+
+Infine, viene chiamato il metodo "render" della risposta, che utilizza una vista per generare una risposta HTML che include il valore dell'argomento e la risposta ottenuta dall'API.
+<% else %>
+ <%= answer %>
+<% end %>
+</pre>
